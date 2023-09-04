@@ -47,10 +47,7 @@ Cyan \033[0;36m
 White \033[0;37m
 */
 
-
 //cosas por hacer
-
-//muerte a todos
 //detectar 10ms de retraso
 //architectura intentar recursiva
 //norminette
@@ -67,9 +64,12 @@ static int	loopswitch(t_var	*varcpy, int id)
 		{	
 			if (brain(varcpy, &localvar, id))
 			{
-				printf("[ERREUR]\n");
-				killphilos(varcpy);
-				return (1);
+				if (pthread_mutex_lock(&localvar.me->deathwrap))
+					return (1);
+				localvar.me->deathflag = 1;
+				if (pthread_mutex_unlock(&localvar.me->deathwrap))
+					return (1);
+				break ;
 			}
 		}
 	}
@@ -79,8 +79,7 @@ static int	loopswitch(t_var	*varcpy, int id)
 		{
 			if (brain(varcpy, &localvar, id))
 			{
-				printf("[ERREUR]\n");
-				killphilos(varcpy);
+				localvar.me->deathflag = 1;
 				return (1);
 			}
 		}
@@ -105,17 +104,16 @@ int	main(int argc, char **argv)
 	int			i;
 
 	i = -1;
-	if (!getargs(argc, argv, &var)) // recuperando todos los args
+	if (!getargs(argc, argv, &var))
 		exit(1);
 	if (maketable(&var))
 		exit(1);
-	while (++i < var.nbphilo) //creando procesos y llamada a la fucnion
+	while (++i < var.nbphilo)
 	{
 		if (pthread_create(&var.proc[i], NULL, oneperson, (void *)&var))
 			exit(1);
 	}
-	//liberando mallocs de procesos
-	//cerrando mutexes e Philos
+	checkdeath(&var);
 	i = -1;
 	while (++i < var.nbphilo)
 		pthread_join(var.proc[i], NULL);

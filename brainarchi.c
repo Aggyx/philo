@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   brainarchi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smagniny <santi.mag777@student.42madrid    +#+  +:+       +#+        */
+/*   By: smagniny <smagniny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 18:13:00 by smagniny          #+#    #+#             */
-/*   Updated: 2023/08/30 16:18:15 by smagniny         ###   ########.fr       */
+/*   Updated: 2023/09/04 18:29:48 by smagniny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,33 +15,33 @@
 static	int	eatsleeprepeat(t_var *varcpy, t_localvar *localvar, int id, t_philo *neighb)
 {
 	//setting mutexwrap to occupied (1)
-	if (binarymutexlock(localvar->me, neighb))
+	if (binarymutexlock(localvar->me, neighb, varcpy, id))
 	{
-		if (diestarvation(varcpy, id))
+		if (diestarvation(varcpy, localvar, id))
 			return (1);
 		else
-			return (0);
+			return (checklife(localvar));
 	}
-	if (eat(localvar->me, neighb))
+	if (eat(localvar->me, neighb, varcpy, id) || checklife(localvar))
 		return (1);
+	printf("%lld %d is eating\n", elapsedtime(&varcpy->tinit), id);
 	usleep(varcpy->time_eat * 1000);
-	printf("[%lums] [%d] is eating\n", elapsedtime(&varcpy->tinit), id);
-	if (finisheat(localvar->me, neighb, id, &varcpy->tinit))
+	if (checklife(localvar) || finisheat(localvar->me, neighb, id, &varcpy->tinit))
 		return (1);
-	gettimeofday(&varcpy->ts, NULL);
+	gettimeofday(&localvar->me->ts, NULL);
 	usleep(varcpy->time_slp * 1000);
-	localvar->thinkflag = 0;
+	localvar->me->thinkflag = 1;
 	return (0);
 }	
 
 static	int	loopcheck(t_var *varcpy, t_localvar *localvar, int id)
 {
-	if (diestarvation(varcpy, id))
+	if (diestarvation(varcpy, localvar, id))
 		return (1);
-	if (!localvar->thinkflag)
+	if (localvar->me->thinkflag == 1)
 	{	
-		printf("[%lums] [%d] is thinking\n", elapsedtime(&varcpy->tinit), id);
-		localvar->thinkflag = 1;
+		printf("%lld %d is thinking\n", elapsedtime(&varcpy->tinit), id);
+		localvar->me->thinkflag = 0;
 	}
 	else
 		usleep(10);
@@ -50,34 +50,32 @@ static	int	loopcheck(t_var *varcpy, t_localvar *localvar, int id)
 
 int	brain(t_var *varcpy, t_localvar *lvar, int id)
 {
-	if (getstatusphilo(lvar->neighbor))
+	if (getstatusphilo(lvar->neighbor) || checklife(lvar))
 	{
-		// if (getstatusphilo(lvar->neighbol))
-		// {
-		// 	if (loopcheck(varcpy, lvar, id))
-		// 		return (1);
-		// }
-		// else if (getstatusphilo(lvar->me))
-		// {
-		// 	if (loopcheck(varcpy, lvar, id))
-		// 		return (1);
-		// }
-		// else
-		// {
-		// 	if (eatsleeprepeat(varcpy, lvar, id, lvar->neighbol, 0))
-		// 		return (1);
-		// }
-		if (loopcheck(varcpy, lvar, id))
-			return (1);
+		if (getstatusphilo(lvar->neighbol) || checklife(lvar))
+		{
+			if (loopcheck(varcpy, lvar, id) || checklife(lvar))
+				return (1);
+		}
+		else if (getstatusphilo(lvar->me) || checklife(lvar))
+		{
+			if (loopcheck(varcpy, lvar, id) || checklife(lvar))
+				return (1);
+		}
+		else
+		{
+			if (eatsleeprepeat(varcpy, lvar, id, lvar->neighbol) || checklife(lvar))
+				return (1);
+		}
 	}
-	else if (getstatusphilo(lvar->me))
+	else if (getstatusphilo(lvar->me) || checklife(lvar))
 	{
-		if (loopcheck(varcpy, lvar, id))
+		if (loopcheck(varcpy, lvar, id) || checklife(lvar))
 			return (1);
 	}
 	else
 	{
-		if (eatsleeprepeat(varcpy, lvar, id, lvar->neighbor))
+		if (eatsleeprepeat(varcpy, lvar, id, lvar->neighbor) || checklife(lvar))
 			return (1);
 	}
 	return (0);

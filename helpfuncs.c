@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helpfuncs.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smagniny <santi.mag777@student.42madrid    +#+  +:+       +#+        */
+/*   By: smagniny <smagniny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 17:39:44 by smagniny          #+#    #+#             */
-/*   Updated: 2023/08/27 11:22:18 by smagniny         ###   ########.fr       */
+/*   Updated: 2023/09/04 18:13:27 by smagniny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,11 @@ int	push(t_table *table, int id)
 	if (table == NULL || newphilo == NULL)
 		return (1);
 	newphilo->id = id;
+	newphilo->deathflag = 0;
+	newphilo->thinkflag = 0;
 	newphilo->hseaten = 0;
+	if (pthread_mutex_init(&newphilo->deathwrap, NULL))
+		return (1);
 	if (pthread_mutex_init(&newphilo->mfkwrap, NULL))
 		return (1);
 	if (pthread_mutex_init(&newphilo->fork, NULL))

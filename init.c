@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smagniny <santi.mag777@student.42madrid    +#+  +:+       +#+        */
+/*   By: smagniny <smagniny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 17:37:00 by smagniny          #+#    #+#             */
-/*   Updated: 2023/08/30 15:40:20 by smagniny         ###   ########.fr       */
+/*   Updated: 2023/09/04 16:40:23 by smagniny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static int	boxisnumberandreturn(char *argv)
 {
 	int	i;
 	int	r;
+
 	r = 0;
 	i = 0;
 	if (!argv[i])
@@ -33,7 +34,10 @@ static int	boxisnumberandreturn(char *argv)
 	}
 	r = atoi(argv);
 	if (r == -77)
-		return (0);
+	{
+		printf("[ERROR]: Invalid Arguments.\n");
+		exit(1);
+	}
 	return (r);
 }
 
@@ -53,7 +57,7 @@ int	getargs(int argc, char **argv, t_var *var)
 	else
 		var->menu = -77;
 	var->id = 1;
-	var->table = (t_table *)malloc(sizeof(t_table) * 1);
+	var->table = (t_table *)malloc(sizeof(t_table));
 	var->proc = (pthread_t *)malloc(sizeof(pthread_t *) * var->nbphilo);
 	if (var->proc == NULL || var->table == NULL)
 	{
@@ -66,11 +70,6 @@ int	getargs(int argc, char **argv, t_var *var)
 
 int	setlocalvar(t_localvar *localvar, t_var	*varcpy, int id)
 {
-	localvar->thinkflag = 0;
-	if (gettimeofday(&varcpy->ts, NULL))
-		return (1);
-	if (gettimeofday(&varcpy->tinit, NULL))
-		return (1);
 	localvar->neighbor = getphilo(varcpy->table, id + 1);
 	if (!localvar->neighbor || localvar->neighbor == NULL)
 		return (1);
@@ -79,6 +78,8 @@ int	setlocalvar(t_localvar *localvar, t_var	*varcpy, int id)
 		return (1);
 	localvar->me = getphilo(varcpy->table, id);
 	if (!localvar->me || localvar->me == NULL)
+		return (1);
+	if (gettimeofday(&localvar->me->ts, NULL))
 		return (1);
 	return (0);
 }

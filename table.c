@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   table.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smagniny <santi.mag777@student.42madrid    +#+  +:+       +#+        */
+/*   By: smagniny <smagniny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 13:07:32 by smagniny          #+#    #+#             */
-/*   Updated: 2023/08/30 16:43:29 by smagniny         ###   ########.fr       */
+/*   Updated: 2023/09/04 15:36:22 by smagniny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ int	maketable(t_var *var)
 		if (push(var->table, i))
 			return (1);
 	}
+	if (gettimeofday(&var->tinit, NULL))
+		return (1);
 	return (0);
 }
 
@@ -68,8 +70,6 @@ t_philo	*getphilo(t_table *table, int id)
 	int		i;
 
 	i = lstsize(table);
-	// if (i == 1 && id == i + 1)
-	// 	return (NULL);
 	if (id == 0)
 		return (lastelem(table));
 	else if (id == i + 1)
@@ -88,12 +88,18 @@ t_philo	*getphilo(t_table *table, int id)
 	}
 }
 
-unsigned	long	elapsedtime(struct timeval *ts)
+long	long	elapsedtime(struct timeval *ts)
 {
 	struct timeval		te;
+	long long			time;
 
+	time = 0;
 	if (gettimeofday(&te, NULL) == 0)
-		return (((te.tv_usec) - (ts->tv_usec)) / 1000);
+	{
+		time = ((te.tv_sec) * 1000 + (te.tv_usec) / 1000)
+			- ((ts->tv_sec * 1000) + (ts->tv_usec / 1000));
+		return (time);
+	}
 	else
 		return (0);
 }

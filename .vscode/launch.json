@@ -7,8 +7,8 @@
         "name": "(gdb) Launch",
         "type": "cppdbg",
         "request": "launch",
-        "program": "/home/sanpy/Documents/qatredeu/philobranch/philo",
-        "args": ["1", "800", "200", "100"],
+        "program": "/Users/smagniny/Documents/philobranch/philo",
+        "args": ["2", "800", "200", "200"],
         "stopAtEntry": false,
         "cwd": "${fileDirname}",
         "environment": [],
@@ -26,5 +26,18 @@
                 "ignoreFailures": true
             }
         ]
+    },
+    {
+        "name": "(lldb) Launch",
+        "type": "cppdbg",
+        "request": "launch",
+        "program": "/Users/smagniny/Documents/philobranch/philo",
+        "args": ["2", "800", "200", "200"],
+        "stopAtEntry": false,
+        "cwd": "${fileDirname}",
+        "environment": [],
+        "externalConsole": false,
+        "MIMode": "lldb"
     }]
+
 }

@@ -6,14 +6,14 @@
 #    By: smagniny <smagniny@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/18 16:01:49 by smagniny          #+#    #+#              #
-#    Updated: 2023/09/04 16:05:00 by smagniny         ###   ########.fr        #
+#    Updated: 2023/09/07 15:55:43 by smagniny         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 CC = gcc -Wall -fsanitize=thread -g
 
-SRC = main.c init.c helpfuncs.c table.c trackid.c philobrain.c brainarchi.c \
+SRC = main.c init.c helpfuncs.c table.c philobrain.c brainarchi.c \
 	errorhandling.c
 
 OBJ_DIR = obj

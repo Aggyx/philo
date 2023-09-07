@@ -48,53 +48,65 @@ White \033[0;37m
 */
 
 //cosas por hacer
+//muchas cosas
+//muerte de todos despues de una muerte
 //detectar 10ms de retraso
-//architectura intentar recursiva
 //norminette
 
-static int	loopswitch(t_var	*varcpy, int id)
+static int	loopswitch(t_var	*varcpy, t_localvar *lvar)
 {
-	t_localvar	localvar;
-
-	if (setlocalvar(&localvar, varcpy, id))
-		return (1);
 	if (varcpy->menu == -77)
-	{
-		while (42)
-		{	
-			if (brain(varcpy, &localvar, id))
-			{
-				if (pthread_mutex_lock(&localvar.me->deathwrap))
-					return (1);
-				localvar.me->deathflag = 1;
-				if (pthread_mutex_unlock(&localvar.me->deathwrap))
-					return (1);
-				break ;
-			}
-		}
-	}
-	else
-	{
-		while (localvar.me->hseaten < varcpy->menu)
+	{	
+		pthread_mutex_lock(&varcpy->endwrap);
+		while (42 && !varcpy->end)
 		{
-			if (brain(varcpy, &localvar, id))
+			pthread_mutex_unlock(&varcpy->endwrap);
+			if (brain(varcpy, lvar, lvar->me->id))
 			{
-				localvar.me->deathflag = 1;
+				while (diestarvation(varcpy, lvar, lvar->me->id,  1) != 1)
+					;
 				return (1);
 			}
 		}
+		pthread_mutex_unlock(&varcpy->endwrap);
 	}
+	else
+	{
+		pthread_mutex_lock(&lvar->me->deadwrap);
+		while (lvar->me->hseaten < varcpy->menu && !lvar->me->dead)
+		{
+			pthread_mutex_unlock(&lvar->me->deadwrap);
+			if (brain(varcpy, lvar, lvar->me->id))
+			{
+				// if (pthread_mutex_lock(&localvar.me->deathwrap))
+				// 	return (1);
+				// localvar.me->deathflag = 1;
+				// if (pthread_mutex_unlock(&localvar.me->deathwrap))
+				// 	return (1);
+				while (diestarvation(varcpy, lvar, lvar->me->id, 1) != 1)
+					;
+				return (1);
+			}
+		}
+		pthread_mutex_unlock(&lvar->me->deadwrap);
+	}
+
 	return (0);
 }
 
 void	*oneperson(void *var)
 {
 	t_var				*varcpy;
+	t_localvar			localvar;
 	int					id;
 
 	varcpy = (t_var *)var;
-	get_next_id(varcpy, &id);
-	loopswitch(varcpy, id);
+	id = get_next_id(varcpy, &localvar);
+	if (id % 2 == 0)
+		usleep(10);
+	if (setlocalvar(&localvar, varcpy, id))
+		return (0);
+	loopswitch(varcpy, &localvar);
 	return (0);
 }
 

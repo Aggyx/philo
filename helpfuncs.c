@@ -6,7 +6,7 @@
 /*   By: smagniny <smagniny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 17:39:44 by smagniny          #+#    #+#             */
-/*   Updated: 2023/09/04 18:13:27 by smagniny         ###   ########.fr       */
+/*   Updated: 2023/09/07 17:06:05 by smagniny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,23 +40,22 @@ int	push(t_table *table, int id)
 	if (table == NULL || newphilo == NULL)
 		return (1);
 	newphilo->id = id;
-	newphilo->deathflag = 0;
 	newphilo->thinkflag = 0;
 	newphilo->hseaten = 0;
-	if (pthread_mutex_init(&newphilo->deathwrap, NULL))
-		return (1);
 	if (pthread_mutex_init(&newphilo->mfkwrap, NULL))
 		return (1);
 	if (pthread_mutex_init(&newphilo->fork, NULL))
 		return (1);
+	if (pthread_mutex_init(&newphilo->deadwrap, NULL))
+		return (1);
 	newphilo->fkwrap = 0;
 	newphilo->fk = 0;
+	newphilo->dead = 0;
 	current = table->top;
 	// mesa vacia
 	if (current == NULL)
 	{
 		table->top = newphilo;
-		newphilo->prev = NULL;
 		newphilo->next = NULL;
 	}
 	else
@@ -65,7 +64,6 @@ int	push(t_table *table, int id)
 			current = current->next;
 		// anadiendo elem al final de la mesa
 		current->next = newphilo;
-		newphilo->prev = current;
 		newphilo->next = NULL;
 	}
 	return (0);

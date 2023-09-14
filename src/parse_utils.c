@@ -6,7 +6,7 @@
 /*   By: smagniny <smagniny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 16:27:33 by smagniny          #+#    #+#             */
-/*   Updated: 2023/09/11 21:22:07 by smagniny         ###   ########.fr       */
+/*   Updated: 2023/09/13 23:35:18 by smagniny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,6 @@ static int	parseparam(char *argv)
 
 	r = 1;
 	i = 0;
-	if (!argv[i])
-		return (1);
 	while (argv[i] == ' ' || argv[i] == '\t' || argv[i] == '\n' \
 		|| argv[i] == '\v' || argv[i] == '\f' || argv[i] == '\r')
 		i++;

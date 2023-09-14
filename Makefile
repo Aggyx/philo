@@ -6,12 +6,12 @@
 #    By: smagniny <smagniny@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/18 16:01:49 by smagniny          #+#    #+#              #
-#    Updated: 2023/09/11 21:44:58 by smagniny         ###   ########.fr        #
+#    Updated: 2023/09/14 01:19:16 by smagniny         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
-CC = gcc -Wall -Werror -Wextra
+CC = gcc #-Wall -Werror -Wextra -fsanitize=thread -g3
 
 SRC = main.c src/brain.c src/death_handler.c src/error_handler.c \
 		src/init.c src/parse_utils.c src/utils.c

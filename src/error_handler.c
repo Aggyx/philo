@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smagniny <smagniny@student.42.fr>          +#+  +:+       +#+        */
+/*   By: smagniny <santi.mag777@student.42madrid    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 17:06:46 by smagniny          #+#    #+#             */
-/*   Updated: 2023/09/14 04:17:56 by smagniny         ###   ########.fr       */
+/*   Updated: 2023/09/15 16:56:11 by smagniny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,11 @@ static  void    destroy_mutexes(t_var *var)
 	i = -1;
     pthread_mutex_destroy(&var->endwrap);
 	while (++i < var->nb)
-		pthread_mutex_destroy(&var->forks[i]);
+	{
+        pthread_mutex_destroy(&var->forks[i]);
+    	pthread_mutex_destroy(&var->philos[i].deadwrap);
+        pthread_mutex_destroy(&var->philos[i].tmutex);
+	}
 }
 
 static  void freealloc(t_var *var)

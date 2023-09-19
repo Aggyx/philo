@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lib.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smagniny <smagniny@student.42.fr>          +#+  +:+       +#+        */
+/*   By: smagniny <santi.mag777@student.42madrid    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 17:41:11 by smagniny          #+#    #+#             */
-/*   Updated: 2023/09/14 05:37:28 by smagniny         ###   ########.fr       */
+/*   Updated: 2023/09/19 09:34:27 by smagniny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,21 +18,29 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <sys/time.h>
+# include <string.h> ///////////////quitar
 
+# define EAT "is eating\n"
+# define SLEEP "is sleeping\n"
+# define THINK "is thinking\n"
+# define DIE "has died\n"
 //variables locales de cada rutina 
 //junto con variables mutex para coordinación de las variables forks.
+
 typedef struct s_philo
 {
-	struct timeval	ts2;
 	struct timeval	ts;
+	pthread_mutex_t	tmutex;
 	struct timeval	tinit;
 	int				id;
+	int				haseat;
+	int				loneliness;
 	int				thinkflag;
 	int				time_die;
 	int				time_eat;
 	int				time_slp;
+	pthread_mutex_t	deadwrap;
 	int				dead;
-	int				iter;
 	pthread_mutex_t	*lefork;
 	int				lfk;
 	pthread_mutex_t	*rifork;
@@ -63,12 +71,15 @@ int				alloc(t_var *var);
 void			init_mutexes(t_var *var);
 //routina
 void			*routine(void *varp);
+void			*alone(t_philos *philo);
 int				diestarvation(t_philos *philo);
 //Utils
-void			timenow(struct timeval *te);
+int				ft_sleep(t_philos *philo, int time);
+int				seedeadval(t_philos *philo);
+void			ft_printf(t_philos *philo, char *action);
+long	long	unsigned	timenow(struct timeval *te);
 long	long	elapsedtime(struct timeval *ts);
 void			philoconstructor(t_var *var);
-void			ft_sleep(int time);
 //Gestión de errores
 void			checkdeath(t_var *var);
 int 			ft_exit(t_var *var, int freeallocs, int freemutex, char *str);

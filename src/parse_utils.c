@@ -6,7 +6,7 @@
 /*   By: smagniny <smagniny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 16:27:33 by smagniny          #+#    #+#             */
-/*   Updated: 2023/09/13 23:35:18 by smagniny         ###   ########.fr       */
+/*   Updated: 2023/09/19 18:12:16 by smagniny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,34 @@ int	getargs(int argc, char **argv, t_var *var)
 		var->menu = parseparam(argv[5]);
 	else
 		var->menu = -1;
-	if (var->nb == 0 || var->time_die == 0 || var->time_eat == 0
-		|| var->time_slp == 0 || var->menu == 0)
-		return (ft_exit(var, 0, 0, "[ERROR]: Arguments has invalid character\n"));
+	if (var->nb == 0 || var->time_die <= 0 || var->time_eat == 0
+		|| var->time_slp < 0 || var->menu == 0)
+		return (ft_exit(var, 0, 0, "[ERROR]: Incorrect arguments\n"));
 	var->id = 1;
 	var->end = 0;
 	return (0);
 }
 
+int	seedeadval(t_philos *philo)
+{
+	pthread_mutex_lock(&philo->deadwrap);
+	if (philo->dead == 1)
+	{
+		pthread_mutex_unlock(&philo->deadwrap);
+		return (1);
+	}
+	pthread_mutex_unlock(&philo->deadwrap);
+	return (0);
+}
+
+int	theyhaveeat(t_philos *philo)
+{
+	pthread_mutex_lock(&philo->tmutex);
+	if (philo->haseat == 0)
+	{
+		pthread_mutex_unlock(&philo->tmutex);
+		return (1);
+	}
+	pthread_mutex_unlock(&philo->tmutex);
+	return (0);
+}

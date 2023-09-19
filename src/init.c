@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smagniny <santi.mag777@student.42madrid    +#+  +:+       +#+        */
+/*   By: smagniny <smagniny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 17:37:22 by smagniny          #+#    #+#             */
-/*   Updated: 2023/09/18 18:15:19 by smagniny         ###   ########.fr       */
+/*   Updated: 2023/09/19 17:58:39 by smagniny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../lib/lib.h"
 
-static	void	philoinitvar(t_philos *philo, t_var *var , int id)
+static void	philoinitvar(t_philos *philo, t_var *var, int id)
 {
 	philo->id = id + 1;
 	philo->tinit = var->tinit;
@@ -45,11 +45,7 @@ void	philoconstructor(t_var *var)
 		{
 			philoinitvar(&var->philos[i], var, i);
 			var->philos[i].lefork = &var->forks[i];
-			// printf("[INFO]: Philo %d was created with left (his) fork: %p \n", i, var->philos[i].lefork);
-			// printf("value of:	%p\n", &var->forks[i]);
 			var->philos[i].rifork = &var->forks[(i + 1) % var->nb];
-			// printf("[INFO]: Philo %d was created with right (neigh) fork: %p\n", i, var->philos[i].rifork);
-			// printf("value of:	%p\n", &var->forks[(i + 1) % var->nb]);
 		}
 	}
 }
@@ -81,4 +77,3 @@ void	init_mutexes(t_var *var)
 		pthread_mutex_init(&var->philos[i].deadwrap, NULL);
 	}
 }
-

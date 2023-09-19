@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smagniny <santi.mag777@student.42madrid    +#+  +:+       +#+        */
+/*   By: smagniny <smagniny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 15:53:53 by smagniny          #+#    #+#             */
-/*   Updated: 2023/09/18 16:40:40 by smagniny         ###   ########.fr       */
+/*   Updated: 2023/09/19 17:53:21 by smagniny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lib/lib.h"
-
 
 /*
 1 800 200 200
@@ -71,19 +70,6 @@ static int	initialize(t_var *var, int argc, char **argv)
 	return (0);
 }
 
-/**
- * The main function initializes a variable, creates multiple threads, waits for them to finish, and
- * then exits.
- * 
- * @param argc The parameter `argc` is the number of command-line arguments passed to the program. It
- * includes the name of the program itself as the first argument.
- * @param argv The `argv` parameter is an array of strings that represents the command-line arguments
- * passed to the program. Each element of the array is a null-terminated string. The first element
- * (`argv[0]`) is usually the name of the program itself. The remaining elements (`argv[1]`
- * 
- * @return The main function is returning an integer value. In this case, it is returning 0.
- */
-
 int	main(int argc, char **argv)
 {
 	t_var	var;
@@ -98,6 +84,6 @@ int	main(int argc, char **argv)
 	checkdeath(&var);
 	while (++i < var.nb)
 		pthread_join(var.proc[i], NULL);
-	ft_exit(&var, 1, 1, "Finish\n");
+	ft_exit(&var, 1, 1, NULL);
 	return (0);
 }

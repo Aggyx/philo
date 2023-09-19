@@ -3,15 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: smagniny <santi.mag777@student.42madrid    +#+  +:+       +#+         #
+#    By: smagniny <smagniny@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/18 16:01:49 by smagniny          #+#    #+#              #
-#    Updated: 2023/09/19 11:37:54 by smagniny         ###   ########.fr        #
+#    Updated: 2023/09/19 17:57:30 by smagniny         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
-CC = gcc #-Wall -Werror -Wextra -fsanitize=thread -g3
+CC = gcc -Wall -Werror -Wextra #-fsanitize=thread -g3
 
 SRC = main.c src/brain.c src/death_handler.c src/error_handler.c \
 		src/init.c src/parse_utils.c src/utils.c

@@ -6,7 +6,7 @@
 /*   By: smagniny <smagniny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 16:27:33 by smagniny          #+#    #+#             */
-/*   Updated: 2023/09/19 18:12:16 by smagniny         ###   ########.fr       */
+/*   Updated: 2023/09/19 18:47:27 by smagniny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,12 +99,12 @@ int	seedeadval(t_philos *philo)
 
 int	theyhaveeat(t_philos *philo)
 {
-	pthread_mutex_lock(&philo->tmutex);
+	pthread_mutex_lock(&philo->deadwrap);
 	if (philo->haseat == 0)
 	{
-		pthread_mutex_unlock(&philo->tmutex);
+		pthread_mutex_unlock(&philo->deadwrap);
 		return (1);
 	}
-	pthread_mutex_unlock(&philo->tmutex);
+	pthread_mutex_unlock(&philo->deadwrap);
 	return (0);
 }

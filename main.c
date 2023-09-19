@@ -6,7 +6,7 @@
 /*   By: smagniny <smagniny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 15:53:53 by smagniny          #+#    #+#             */
-/*   Updated: 2023/09/19 17:53:21 by smagniny         ###   ########.fr       */
+/*   Updated: 2023/09/19 18:33:50 by smagniny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ Purple \033[0;35m
 Cyan \033[0;36m
 White \033[0;37m
 */
+
+//parse utils 91
 
 static int	initialize(t_var *var, int argc, char **argv)
 {

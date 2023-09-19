@@ -6,7 +6,7 @@
 /*   By: smagniny <smagniny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 19:06:48 by smagniny          #+#    #+#             */
-/*   Updated: 2023/09/19 18:10:10 by smagniny         ###   ########.fr       */
+/*   Updated: 2023/09/19 18:46:11 by smagniny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,15 @@ static	int	timesincelasteat(t_philos *philo, long long time_die)
 	long long int	num;
 
 	num = 0;
-	pthread_mutex_lock(&philo->tmutex);
+	pthread_mutex_lock(&philo->deadwrap);
 	num = elapsedtime(&philo->ts);
 	if (num >= time_die)
 	{
 		philo->dead = 1;
-		pthread_mutex_unlock(&philo->tmutex);
+		pthread_mutex_unlock(&philo->deadwrap);
 		return (1);
 	}
-	pthread_mutex_unlock(&philo->tmutex);
+	pthread_mutex_unlock(&philo->deadwrap);
 	return (0);
 }
 

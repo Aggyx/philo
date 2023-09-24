@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smagniny <smagniny@student.42.fr>          +#+  +:+       +#+        */
+/*   By: smagniny <santi.mag777@student.42madrid    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 16:27:33 by smagniny          #+#    #+#             */
-/*   Updated: 2023/09/19 18:47:27 by smagniny         ###   ########.fr       */
+/*   Updated: 2023/09/22 12:27:21 by smagniny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,26 +85,28 @@ int	getargs(int argc, char **argv, t_var *var)
 	return (0);
 }
 
-int	seedeadval(t_philos *philo)
+//definida aqui pq ahorra un archivo-> .h
+int	seedeadval(t_var *var)
 {
-	pthread_mutex_lock(&philo->deadwrap);
-	if (philo->dead == 1)
+	pthread_mutex_lock(&var->endwrap);
+	if (var->end)
 	{
-		pthread_mutex_unlock(&philo->deadwrap);
+		pthread_mutex_unlock(&var->endwrap);
 		return (1);
 	}
-	pthread_mutex_unlock(&philo->deadwrap);
+	pthread_mutex_unlock(&var->endwrap);
 	return (0);
 }
 
+//definida aqui pq ahorra un archivo ->.h
 int	theyhaveeat(t_philos *philo)
 {
-	pthread_mutex_lock(&philo->deadwrap);
+	pthread_mutex_lock(&philo->tmutex);
 	if (philo->haseat == 0)
 	{
-		pthread_mutex_unlock(&philo->deadwrap);
+		pthread_mutex_unlock(&philo->tmutex);
 		return (1);
 	}
-	pthread_mutex_unlock(&philo->deadwrap);
+	pthread_mutex_unlock(&philo->tmutex);
 	return (0);
 }

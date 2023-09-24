@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smagniny <smagniny@student.42.fr>          +#+  +:+       +#+        */
+/*   By: smagniny <santi.mag777@student.42madrid    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 17:06:46 by smagniny          #+#    #+#             */
-/*   Updated: 2023/09/19 18:23:17 by smagniny         ###   ########.fr       */
+/*   Updated: 2023/09/24 22:49:04 by smagniny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ static void	destroy_mutexes(t_var *var)
 	while (++i < var->nb)
 	{
 		pthread_mutex_destroy(&var->forks[i]);
-		pthread_mutex_destroy(&var->philos[i].deadwrap);
 		pthread_mutex_destroy(&var->philos[i].tmutex);
 	}
 }

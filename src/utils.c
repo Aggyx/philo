@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smagniny <smagniny@student.42.fr>          +#+  +:+       +#+        */
+/*   By: smagniny <santi.mag777@student.42madrid    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 18:27:38 by smagniny          #+#    #+#             */
-/*   Updated: 2023/09/19 18:22:51 by smagniny         ###   ########.fr       */
+/*   Updated: 2023/09/24 23:43:32 by smagniny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,15 +54,13 @@ long	long	timenow(struct timeval *te)
 
 void	ft_printf(t_philos *philo, char *action)
 {
-	pthread_mutex_lock(&philo->deadwrap);
-	if (philo->dead == 0)
+	if (*philo->dead == 0)
 		printf("%llu %d %s", elapsedtime(&philo->tinit), philo->id, action);
 	else
 	{
 		if (ft_strcmp(action, DIE) == 0)
 			printf("%llu %d %s", elapsedtime(&philo->tinit), philo->id, action);
 	}
-	pthread_mutex_unlock(&philo->deadwrap);
 }
 
 int	ft_sleep(t_philos *philo, int time)
@@ -73,8 +71,8 @@ int	ft_sleep(t_philos *philo, int time)
 	start_time = timenow(&te);
 	while (timenow(&te) < start_time + time)
 	{
-		usleep(100);
-		if (seedeadval(philo))
+		usleep(50);
+		if (*philo->dead)
 			return (1);
 	}
 	return (0);

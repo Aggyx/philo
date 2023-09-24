@@ -3,54 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   death_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smagniny <smagniny@student.42.fr>          +#+  +:+       +#+        */
+/*   By: smagniny <santi.mag777@student.42madrid    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 19:06:48 by smagniny          #+#    #+#             */
-/*   Updated: 2023/09/19 18:46:11 by smagniny         ###   ########.fr       */
+/*   Updated: 2023/09/24 23:36:40 by smagniny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../lib/lib.h"
 
-static void	killeveryone(t_var *var)
-{
-	int	i;
-
-	i = -1;
-	while (++i < var->nb)
-	{
-		pthread_mutex_lock(&var->philos[i].deadwrap);
-		var->philos[i].dead = 1;
-		pthread_mutex_unlock(&var->philos[i].deadwrap);
-	}
-}
-
-static	int	timesincelasteat(t_philos *philo, long long time_die)
+static	int	timesincelasteat(t_philos *philo, t_var  *var)
 {
 	long long int	num;
 
 	num = 0;
-	pthread_mutex_lock(&philo->deadwrap);
+	pthread_mutex_lock(&philo->tmutex);
 	num = elapsedtime(&philo->ts);
-	if (num >= time_die)
+	pthread_mutex_unlock(&philo->tmutex);
+	if (num >= var->time_die)
 	{
-		philo->dead = 1;
-		pthread_mutex_unlock(&philo->deadwrap);
+		pthread_mutex_lock(&var->endwrap);
+		var->end = 1;
+		pthread_mutex_unlock(&var->endwrap);
 		return (1);
 	}
-	pthread_mutex_unlock(&philo->deadwrap);
 	return (0);
 }
 
-static int	check_eatandeath(t_var *var, t_philos *philo)
+static int	check_eatandeath(t_var *var, t_philos *philo, int sum)
 {
-	if (seedeadval(philo))
+	if (seedeadval(var))
 		return (1);
-	if (timesincelasteat(philo, var->time_die))
-	{
-		ft_printf(philo, DIE);
+	if (sum == var->nb)
 		return (1);
-	}
+	if (timesincelasteat(philo, var))
+		return (1);
 	return (0);
 }
 
@@ -67,9 +54,10 @@ void	checkdeath(t_var *var)
 		{
 			if (theyhaveeat(&var->philos[i]))
 				sum++;
-			if (check_eatandeath(var, &var->philos[i]) || sum == var->nb)
+			if (check_eatandeath(var, &var->philos[i], sum))
 			{
-				killeveryone(var);
+				var->end = 1;
+				ft_printf(&var->philos[i], DIE);
 				break ;
 			}
 			if (i == var->nb - 1)
@@ -84,7 +72,7 @@ void	checkdeath(t_var *var)
 
 int	diestarvation(t_philos *philo)
 {
-	if (seedeadval(philo))
+	if (*philo->dead)
 		return (1);
 	if (philo->thinkflag)
 	{

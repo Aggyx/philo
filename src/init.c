@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smagniny <smagniny@student.42.fr>          +#+  +:+       +#+        */
+/*   By: smagniny <santi.mag777@student.42madrid    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 17:37:22 by smagniny          #+#    #+#             */
-/*   Updated: 2023/09/19 17:58:39 by smagniny         ###   ########.fr       */
+/*   Updated: 2023/09/24 22:59:28 by smagniny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	philoinitvar(t_philos *philo, t_var *var, int id)
 	philo->time_die = var->time_die;
 	philo->time_slp = var->time_slp;
 	philo->time_eat = var->time_eat;
-	philo->dead = 0;
+	philo->dead = &var->end;
 	philo->loneliness = 0;
 }
 
@@ -72,8 +72,7 @@ void	init_mutexes(t_var *var)
 	pthread_mutex_init(&var->endwrap, NULL);
 	while (++i < var->nb)
 	{
-		pthread_mutex_init(&var->forks[i], NULL);
 		pthread_mutex_init(&var->philos[i].tmutex, NULL);
-		pthread_mutex_init(&var->philos[i].deadwrap, NULL);
+		pthread_mutex_init(&var->forks[i], NULL);
 	}
 }

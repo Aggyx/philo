@@ -3,18 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   brain.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smagniny <santi.mag777@student.42madrid    +#+  +:+       +#+        */
+/*   By: smagniny <smagniny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 18:01:29 by smagniny          #+#    #+#             */
-/*   Updated: 2023/09/24 23:23:15 by smagniny         ###   ########.fr       */
+/*   Updated: 2023/09/25 19:20:13 by smagniny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../lib/lib.h"
 
 static int	takeforks(t_philos *philo)
-{
-	if (*philo->dead || theyhaveeat(philo))
+{	
+	pthread_mutex_lock(philo->diemutex);
+	if (*philo->dead)
+	{
+		pthread_mutex_unlock(philo->diemutex);
+		return (1);
+	}
+	pthread_mutex_unlock(philo->diemutex);
+	if (theyhaveeat(philo))
 		return (1);
 	pthread_mutex_lock(philo->rifork);
 	pthread_mutex_lock(philo->lefork);
@@ -33,8 +40,9 @@ static int	eat(t_philos *philo)
 	ft_printf(philo, SLEEP);
 	philo->lfk = 0;
 	philo->rfk = 0;
+	pthread_mutex_lock(&philo->tmutex);
 	gettimeofday(&philo->ts, NULL);
-//he quitado el mutex de philo->ts
+	pthread_mutex_unlock(&philo->tmutex);
 	pthread_mutex_unlock(philo->rifork);
 	pthread_mutex_unlock(philo->lefork);
 	pthread_mutex_lock(&philo->tmutex);
@@ -51,8 +59,9 @@ void	*routine(void *philp)
 	t_philos	*philo;
 
 	philo = (t_philos *)philp;
-	if (gettimeofday(&philo->ts, NULL))
-		return ((void *)1);
+	pthread_mutex_lock(&philo->tmutex);
+	gettimeofday(&philo->ts, NULL);
+	pthread_mutex_unlock(&philo->tmutex);
 	if (philo->id % 2 == 0)
 		usleep(50);
 	if (philo->loneliness)

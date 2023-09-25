@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smagniny <santi.mag777@student.42madrid    +#+  +:+       +#+        */
+/*   By: smagniny <smagniny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 17:37:22 by smagniny          #+#    #+#             */
-/*   Updated: 2023/09/24 22:59:28 by smagniny         ###   ########.fr       */
+/*   Updated: 2023/09/25 19:16:17 by smagniny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static void	philoinitvar(t_philos *philo, t_var *var, int id)
 	philo->time_slp = var->time_slp;
 	philo->time_eat = var->time_eat;
 	philo->dead = &var->end;
+	philo->diemutex = &var->endwrap;
 	philo->loneliness = 0;
 }
 

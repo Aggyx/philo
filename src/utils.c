@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smagniny <santi.mag777@student.42madrid    +#+  +:+       +#+        */
+/*   By: smagniny <smagniny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 18:27:38 by smagniny          #+#    #+#             */
-/*   Updated: 2023/09/24 23:43:32 by smagniny         ###   ########.fr       */
+/*   Updated: 2023/09/25 19:14:29 by smagniny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,15 @@ long	long	timenow(struct timeval *te)
 
 void	ft_printf(t_philos *philo, char *action)
 {
+	pthread_mutex_lock(philo->diemutex);
 	if (*philo->dead == 0)
+	{
+		pthread_mutex_unlock(philo->diemutex);
 		printf("%llu %d %s", elapsedtime(&philo->tinit), philo->id, action);
+	}
 	else
 	{
+		pthread_mutex_unlock(philo->diemutex);
 		if (ft_strcmp(action, DIE) == 0)
 			printf("%llu %d %s", elapsedtime(&philo->tinit), philo->id, action);
 	}
@@ -71,9 +76,14 @@ int	ft_sleep(t_philos *philo, int time)
 	start_time = timenow(&te);
 	while (timenow(&te) < start_time + time)
 	{
-		usleep(50);
+		usleep(60);
+		pthread_mutex_lock(philo->diemutex);
 		if (*philo->dead)
+		{
+			pthread_mutex_unlock(philo->diemutex);
 			return (1);
+		}
+		pthread_mutex_unlock(philo->diemutex);
 	}
 	return (0);
 }

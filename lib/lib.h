@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lib.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smagniny <santi.mag777@student.42madrid    +#+  +:+       +#+        */
+/*   By: smagniny <smagniny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 17:41:11 by smagniny          #+#    #+#             */
-/*   Updated: 2023/09/22 12:28:28 by smagniny         ###   ########.fr       */
+/*   Updated: 2023/09/25 19:12:22 by smagniny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_philo
 	int				time_slp;
 	int				*dead;
 	pthread_mutex_t	tmutex;
+	pthread_mutex_t	*diemutex;
 	pthread_mutex_t	*lefork;
 	int				lfk;
 	pthread_mutex_t	*rifork;

@@ -6,13 +6,22 @@
 /*   By: smagniny <smagniny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 19:06:48 by smagniny          #+#    #+#             */
-/*   Updated: 2023/09/25 19:15:25 by smagniny         ###   ########.fr       */
+/*   Updated: 2023/09/25 19:34:38 by smagniny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../lib/lib.h"
 
-static	int	timesincelasteat(t_philos *philo, t_var *var)
+static	int	setdeath(t_var *var, int i)
+{
+	pthread_mutex_lock(&var->endwrap);
+	var->end = 1;
+	pthread_mutex_unlock(&var->endwrap);
+	ft_printf(&var->philos[i], DIE);
+	return (1);
+}
+
+static	int	timesincelasteat(t_philos *philo, t_var *var, int i)
 {
 	long long int	num;
 
@@ -21,18 +30,18 @@ static	int	timesincelasteat(t_philos *philo, t_var *var)
 	num = elapsedtime(&philo->ts);
 	pthread_mutex_unlock(&philo->tmutex);
 	if (num >= var->time_die)
-		return (1);
+		return (setdeath(var, i));
 	return (0);
 }
 
-static int	check_eatandeath(t_var *var, t_philos *philo, int sum)
+static int	check_eatandeath(t_var *var, t_philos *philo, int sum, int i)
 {
 	if (seedeadval(var))
-		return (1);
+		return (setdeath(var, i));
 	if (sum == var->nb)
 		return (1);
-	if (timesincelasteat(philo, var))
-		return (1);
+	if (timesincelasteat(philo, var, i))
+		return (setdeath(var, i));
 	return (0);
 }
 
@@ -49,14 +58,8 @@ void	checkdeath(t_var *var)
 		{
 			if (theyhaveeat(&var->philos[i]))
 				sum++;
-			if (check_eatandeath(var, &var->philos[i], sum))
-			{
-				pthread_mutex_lock(&var->endwrap);
-				var->end = 1;
-				pthread_mutex_unlock(&var->endwrap);
-				ft_printf(&var->philos[i], DIE);
+			if (check_eatandeath(var, &var->philos[i], sum, i))
 				break ;
-			}
 			if (i == var->nb - 1)
 			{	
 				i = -1;

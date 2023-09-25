@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smagniny <santi.mag777@student.42madrid    +#+  +:+       +#+        */
+/*   By: smagniny <smagniny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 16:27:33 by smagniny          #+#    #+#             */
-/*   Updated: 2023/09/22 12:27:21 by smagniny         ###   ########.fr       */
+/*   Updated: 2023/09/25 19:45:14 by smagniny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,8 @@ int	getargs(int argc, char **argv, t_var *var)
 		var->menu = parseparam(argv[5]);
 	else
 		var->menu = -1;
-	if (var->nb == 0 || var->time_die <= 0 || var->time_eat == 0
-		|| var->time_slp < 0 || var->menu == 0)
+	if (var->nb <= 0 || var->time_die <= 0 || var->time_eat <= 0
+		|| var->time_slp <= 0 || var->menu == 0)
 		return (ft_exit(var, 0, 0, "[ERROR]: Incorrect arguments\n"));
 	var->id = 1;
 	var->end = 0;

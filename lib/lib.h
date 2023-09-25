@@ -6,7 +6,7 @@
 /*   By: smagniny <smagniny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 17:41:11 by smagniny          #+#    #+#             */
-/*   Updated: 2023/09/25 19:12:22 by smagniny         ###   ########.fr       */
+/*   Updated: 2023/09/25 21:40:47 by smagniny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int				theyhaveeat(t_philos *philo);
 int				seedeadval(t_var *var);
 //utiles
 int				ft_strcmp(const char *s1, const char *s2);
-int				ft_sleep(t_philos *philo, int time);
+int				ft_sleep(int time);
 void			ft_printf(t_philos *philo, char *action);
 //Gestión de errores
 long long		timenow(struct timeval *te);

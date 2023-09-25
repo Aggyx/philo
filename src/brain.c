@@ -6,7 +6,7 @@
 /*   By: smagniny <smagniny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 18:01:29 by smagniny          #+#    #+#             */
-/*   Updated: 2023/09/25 19:20:13 by smagniny         ###   ########.fr       */
+/*   Updated: 2023/09/25 21:41:30 by smagniny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	takeforks(t_philos *philo)
 static int	eat(t_philos *philo)
 {
 	ft_printf(philo, EAT);
-	if (ft_sleep(philo, philo->time_eat))
+	if (ft_sleep(philo->time_eat))
 		return (1);
 	ft_printf(philo, SLEEP);
 	philo->lfk = 0;
@@ -49,7 +49,7 @@ static int	eat(t_philos *philo)
 	philo->haseat -= 1;
 	pthread_mutex_unlock(&philo->tmutex);
 	philo->thinkflag = 1;
-	if (ft_sleep(philo, philo->time_slp))
+	if (ft_sleep(philo->time_slp))
 		return (1);
 	return (0);
 }

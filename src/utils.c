@@ -6,7 +6,7 @@
 /*   By: smagniny <smagniny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 18:27:38 by smagniny          #+#    #+#             */
-/*   Updated: 2023/09/25 19:14:29 by smagniny         ###   ########.fr       */
+/*   Updated: 2023/09/25 21:41:37 by smagniny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,22 +68,13 @@ void	ft_printf(t_philos *philo, char *action)
 	}
 }
 
-int	ft_sleep(t_philos *philo, int time)
+int	ft_sleep(int time)
 {
 	struct timeval		te;
 	long long			start_time;
 
 	start_time = timenow(&te);
 	while (timenow(&te) < start_time + time)
-	{
 		usleep(60);
-		pthread_mutex_lock(philo->diemutex);
-		if (*philo->dead)
-		{
-			pthread_mutex_unlock(philo->diemutex);
-			return (1);
-		}
-		pthread_mutex_unlock(philo->diemutex);
-	}
 	return (0);
 }
